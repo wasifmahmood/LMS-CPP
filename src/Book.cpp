@@ -11,15 +11,15 @@ private:
     string ISBN;       // book number
     string genre;      // genre type
     bool availability; // bookavaiable
-    Author *author;    // auther define
+    // Author* author;    // auther defin
 
 public:
-    Book(string t, string i, string g, Author *author)
+    Book(string t, string i, string g, author nullptr)
     {
         title = t;
         ISBN = i;
         genre = g;
-        author = author;
+        // author = author;
         availability = true;
     };
 
@@ -45,5 +45,9 @@ public:
     void calculateFine()
     {
         cout << "Fine calculation ." << endl;
+    }
+
+    void setAuthor(Author* author) {
+        this->author = author;
     }
 };
