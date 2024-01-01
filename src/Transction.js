@@ -1,4 +1,3 @@
-// Assuming User.js, Book.js, and Librarian.js are converted and available
 import User from "./User.js";
 import Book from "./Book.js";
 import Librarian from "./Librarian.js";
@@ -13,7 +12,7 @@ class Transaction {
         this.librarian = transactionLibrarian;
     }
 
-    // Additional methods related to transaction processing could be added here
+
 }
 
 export default Transaction;

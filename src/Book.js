@@ -1,4 +1,3 @@
-// Assuming Author.js has been similarly converted and is available
 import Author from "./Author.js";
 
 class Book {
