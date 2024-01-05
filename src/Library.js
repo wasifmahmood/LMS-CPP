@@ -13,8 +13,8 @@ class Library {
         this.registeredStudents = [];
         this.registeredLibrarians = [];
         this.books = [];
-        this.shelves = {};
-        this.issuedBooks = {};
+        this.issuedBooks = [];
+        this.borrowedNooks = [];
     }
 
 
