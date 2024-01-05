@@ -181,9 +181,13 @@ function getUserInput() {
                         rl.question('Enter Book genre: ', (bookGenre) => {
                             newBook.bookGenre = bookGenre;
 
-                            library.books.push(newBook);
-                            console.log(`Book ${newBook.bookTitle} with ISBN ${newBook.bookISBN} and genre ${newBook.bookGenre} has been registered.`);
-                            getUserInput();
+                            rl.question('Enter Book to the Shelve: ', (bookShelve) => {
+                                newBook.bookShelve = bookShelve;
+
+                                library.books.push(newBook);
+                                console.log(`Book ${newBook.bookTitle} with ISBN ${newBook.bookISBN} genre ${newBook.bookGenre} and Shelve ${newBook.bookShelve} has been registered.`);
+                                getUserInput();
+                            });
                         });
                     });
                 });
@@ -214,62 +218,66 @@ function getUserInput() {
                         rl.question('Enter Librarian ID: ', (LibrarianID) => {
                             borrowBook.LibrarianID = LibrarianID;
 
-                        const bookToBorrow = library.books.find(book => book.bookISBN === bookISBN);
 
-                        if (bookToBorrow) {
+                            rl.question('Enter Borrowed Date (DD-MM-YYYY) ', (BorrowedDate) => {
+                                borrowBook.BorrowedDate = BorrowedDate;
 
-                            library.books = library.books.filter(book => book.bookISBN !== bookISBN);
-                            borrowedBooks.push(borrowBook);
-                            console.log(`Student Borrowed Book Successfully with BookISBN ${borrowBook.bookISBN} Student ID ${borrowBook.studentID} and Librarian ID ${borrowBook.LibrarianID}  `);
+                                const bookToBorrow = library.books.find(book => book.bookISBN === bookISBN);
 
+                                if (bookToBorrow) {
+
+                                    library.books = library.books.filter(book => book.bookISBN !== bookISBN);
+                                    borrowedBooks.push(borrowBook);
+                                    console.log(`Student Borrowed Book Successfully with BookISBN ${borrowBook.bookISBN} Student ID ${borrowBook.studentID} Librarian ID ${borrowBook.LibrarianID} Borrowed Date ${BorrowedDate} `);
+
+
+                                } else {
+                                    console.log(`Book ISBN ${bookISBN} is not Add in library.`);
+                                }
+                                getUserInput();
+                            });
+                        });
+                    });
+                });
+                break;
+            }
+            // Case 8: Returning a Book with Fine Calculation
+            case 8: {
+                rl.question('Enter Book ISBN to return: ', (bookISBN) => {
+                    rl.question('Enter Returned Date (DD-MM-YYYY): ', (ReturnedDate) => {
+                        const returnBook = borrowedBooks.find(book => book.bookISBN === bookISBN);
+
+                        if (returnBook) {
+                            // Parse borrowed date and returned date
+                            const borrowedDate = new Date(returnBook.BorrowedDate);
+                            const returnedDate = new Date(ReturnedDate);
+
+                            // Calculate the difference in days
+                            const daysDifference = Math.ceil((returnedDate - borrowedDate) / (1000 * 60 * 60 * 24));
+
+                            if (daysDifference <= 5) {
+                                // No fine if returned within 5 days
+                                console.log(`No fine. Book returned within 5 days.`);
+                            } else {
+                                // Calculate fine for each day exceeding 5 days
+                                const fine = (daysDifference - 5) * 100;
+                                console.log(`Fine: ${fine} rupees for returning after ${daysDifference} days.`);
+                            }
+
+                            // Update library and borrowedBooks
+                            library.books.push(returnBook);
+                        
+                            console.log(`Student Returned Book Successfully with BookISBN ${returnBook.bookISBN} borrowed date ${borrowedDate} Returned Date ${returnedDate}`);
                         } else {
-                            console.log(`Book ISBN ${bookISBN} is not Add in library.`);
+                            console.log(`Book ISBN ${bookISBN} not borrowed.`);
                         }
                         getUserInput();
                     });
                 });
-                });
                 break;
             }
-            case 8: {
-                rl.question('Enter Book ISBN to return: ', (bookISBN) => {
-                    const returnBook = borrowedBooks.find(book => book.bookISBN === bookISBN);
-            
-                    if (returnBook) {
-        
-                        library.books = library.books.filter(book => book.bookISBN !== bookISBN);
-            
-                        library.books.push(returnBook);
-            
-                        console.log(`Student Returned Book Successfully with BookISBN ${returnBook.bookISBN}`);
-                    } else {
-                        console.log(`Book  ISBN ${bookISBN} not borrowed.`);
-                    }
-                    getUserInput();
-                });
-                break;
-            }
-            // case 9: {
-            //     rl.question('Enter Book ISBN to Shelving: ', (bookISBN) => {
-            //         const shelveBook = borrowedBooks.find(book => book.bookISBN === bookISBN);
-            
-            //         if (shelveBook) {
-        
-            //             borrowedBooks = borrowedBooks.filter(book => book.bookISBN !== bookISBN);
-            
-            //             library.books.push(shelveBook);
-            
-            //             console.log(`Student Returned Book Successfully with BookISBN ${shelveBook.bookISBN}`);
-            //         } else {
-            //             console.log(`Book ISBN ${bookISBN} not avaiable in Library.`);
-            //         }
-            //         getUserInput();
-            //     });
-            //     break;
-            // }
             case 0:
-                console.log("Exiting program.");
-                // rl.close();
+                console.log("Exiting program.");[]
                 return;
             default:
                 console.log("Invalid choice. Try again.");
