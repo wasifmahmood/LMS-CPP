@@ -2,6 +2,7 @@ import Library from "./src/Library.js";
 import readline from 'readline';
 import fs from "fs";
 
+
 function saveLibrary(library) {
     fs.writeFileSync("libraryData.json", JSON.stringify(library), 'utf-8');
 }
@@ -27,13 +28,14 @@ function getUserInput() {
         output: process.stdout
     });
 
-    console.log("1. Register Librarian\n2. Remove Librarian\n3. Register Student\n4. Remove Student\n5. Add Book\n6. Remove Book\n7. Borrow Book\n8. Return Book\n9. Issue Book\n0. Exit\n");
+    console.log("1. Register Librarian\n2. Remove Librarian\n3. Register Student\n4. Remove Student\n5. Add Book\n6. Remove Book\n7. Borrow Book\n8. Return Book\n0. Exit\n");
 
 
     rl.question("Enter your choice:", (choice) => {
         choice = parseInt(choice);
 
         switch (choice) {
+            //Add Librarian
             case 1: {
                 const newLibrarian = {};
 
@@ -62,21 +64,22 @@ function getUserInput() {
                 });
                 break;
             }
-
+            //Remove Librarian
             case 2: {
                 rl.question('Enter Librarian ID to remove: ', (librarianID) => {
                     const removedLibrarian = library.registeredLibrarians.find(librarian => librarian.librarianID === librarianID);
                     if (removedLibrarian) {
                         library.registeredLibrarians = library.registeredLibrarians.filter(librarian => librarian.librarianID !== librarianID);
-                        console.log(`Librarian ${removedLibrarian.librarianName} with ID ${removedLibrarian.librarianID} has been removed.`);
+                        console.log(`Librarian ID ${removedLibrarian.librarianID} has been removed.`);
                     } else {
-                        console.log(`Librarian with ID ${librarianID} not found.`);
+                        console.log(`Librarian ID ${librarianID} not found.`);
                     }
                     saveLibrary(library)
                     getUserInput();
                 });
                 break;
             }
+            //Add Student
             case 3: {
                 const newStudent = {};
 
@@ -105,20 +108,22 @@ function getUserInput() {
                 });
                 break;
             }
+            //Remove Student
             case 4: {
                 rl.question('Enter Student ID to remove: ', (studentID) => {
                     const removedStudent = library.registeredStudents.find(student => student.studentID === studentID);
                     if (removedStudent) {
                         library.registeredStudents = library.registeredStudents.filter(student => student.studentID !== studentID);
-                        console.log(`Student ${removedStudent.studentName} with ID ${removedStudent.studentID} has been removed.`);
+                        console.log(`Student ID ${removedStudent.studentID} has been removed.`);
                     } else {
-                        console.log(`Student with ID ${studentID} not found.`);
+                        console.log(`Student ID ${studentID} not found.`);
                     }
                     saveLibrary(library)
                     getUserInput();
                 });
                 break;
             }
+            //Add Book
             case 5: {
                 const newBook = {};
 
@@ -144,6 +149,7 @@ function getUserInput() {
                 });
                 break;
             }
+            //Remove Book
             case 6: {
                 rl.question('Enter Book ID to remove: ', (bookISBN) => {
                     const removedBook = library.books.find(book => book.bookISBN === bookISBN);
@@ -158,37 +164,37 @@ function getUserInput() {
                 });
                 break;
             }
+            //Borrowed Book
             case 7: {
                 const borrowBook = {};
-            
-                rl.question('Enter Book ISBN: ', (bookISBN) => {
-                    borrowBook.bookISBN = bookISBN;
-            
+
+                rl.question('Enter Book Title: ', (bookTitle) => {
+                    borrowBook.bookTitle = bookTitle;
+
                     rl.question('Enter Student ID: ', (studentID) => {
-                        const student = library.registeredStudents.filter(student => student.studentID === studentID);
-                        
-                        if (student) {
+                        const students = library.registeredStudents.filter(student => student.studentID === studentID);
+
+                        if (students.length > 0) {
                             borrowBook.studentID = studentID;
-            
+
                             rl.question('Enter Librarian ID: ', (librarianID) => {
-                                const librarian = library.registeredLibrarians.filter(librarian => librarian.librarianID === librarianID);
-            
-                                if (librarian) {
+                                const librarians = library.registeredLibrarians.filter(librarian => librarian.librarianID === librarianID);
+
+                                if (librarians.length > 0) {
                                     borrowBook.librarianID = librarianID;
-            
-                                    rl.question('Enter Borrowed Date (DD-MM-YYYY): ', (borrowedDate) => {
+
+                                    rl.question('Enter Borrowed Date (MM-DD-YYYY): ', (borrowedDate) => {
                                         borrowBook.borrowedDate = borrowedDate;
-            
-                                        const bookToBorrow = library.books.find(book => book.bookISBN === bookISBN);
-            
+
+                                        const bookToBorrow = library.books.find(book => book.bookTitle === bookTitle);
+
                                         if (bookToBorrow) {
-                                            library.books = library.books.filter(book => book.bookISBN !== bookISBN);
+                                            library.books = library.books.filter(book => book.bookTitle !== bookTitle);
                                             borrowedBooks.push(borrowBook);
-                                            console.log(`Student Borrowed Book Successfully with BookISBN ${borrowBook.bookISBN} Student ID ${borrowBook.studentID} Librarian ID ${borrowBook.librarianID} Borrowed Date ${borrowedDate}`);
+                                            console.log(`Student Borrowed Book Successfully with Book ${borrowBook.bookTitle} Student ID ${borrowBook.studentID} Librarian ID ${borrowBook.librarianID} Borrowed Date ${borrowBook.borrowedDate}`);
                                         } else {
-                                            console.log(`Book ISBN ${bookISBN} is not added in the library.`);
+                                            console.log(`Book ISBN ${bookTitle} is not added in the library.`);
                                         }
-            
                                         saveLibrary(library);
                                         getUserInput();
                                     });
@@ -205,74 +211,45 @@ function getUserInput() {
                 });
                 break;
             }
-            
+            //Return Book
+            case 8: {   
+                rl.question('Enter Book Title to return: ', (bookTitle) => {
+                    rl.question('Enter Borrowed Date (MM-DD-YYYY): ', (BorrowedDate) => {
+                        rl.question('Enter Returned Date (MM-DD-YYYY): ', (ReturnedDate) => {
 
-            case 8: {
-                rl.question('Enter Book ISBN to return: ', (bookISBN) => {
-                    rl.question('Enter Returned Date (DD-MM-YYYY): ', (ReturnedDate) => {
-                        const returnBook = borrowedBooks.find(book => book.bookISBN === bookISBN);
+                            const returnBook = borrowedBooks.find(book => book.bookTitle === bookTitle);
 
-                        if (returnBook) {
-                            const borrowedDate = new Date(returnBook.BorrowedDate);
-                            const returnedDate = new Date(ReturnedDate);
+                            if (returnBook) {
+                                const borrowedDate = new Date(BorrowedDate);
+                                const returnedDate = new Date(ReturnedDate);
 
-                            const daysDifference = Math.ceil((returnedDate - borrowedDate) / (1000 * 60 * 60 * 24));
+                                const daysDifference = Math.ceil((returnedDate - borrowedDate) / (1000 * 60 * 60 * 24));
 
-                            if (daysDifference <= 5) {
-                                console.log(`No fine. Book returned within 5 days.`);
+                                if (daysDifference <= 5) {
+                                    console.log(`No fine. Book returned within 5 days.`);
+                                } else {
+                                    const finePerDay = 100;
+                                    const additionalDays = daysDifference - 5;
+                                    const fine = additionalDays * finePerDay;
+
+                                    console.log(`Fine: ${fine} rupees for returning after ${daysDifference} days.`);
+                                }
+
+                                library.books.push(returnBook);
+
+                                console.log(`Student Returned Book Successfully with BookISBN ${returnBook.bookTitle} borrowed date ${BorrowedDate} Returned Date ${returnedDate}`);
                             } else {
-                                const fine = (daysDifference - 5) * 100;
-                                console.log(`Fine: ${fine} rupees for returning after ${daysDifference} days.`);
+                                console.log(`Book ISBN ${bookTitle} not borrowed.`);
                             }
-
-                            library.books.push(returnBook);
-
-                            console.log(`Student Returned Book Successfully with BookISBN ${returnBook.bookISBN} borrowed date ${borrowedDate} Returned Date ${returnedDate}`);
-                        } else {
-                            console.log(`Book ISBN ${bookISBN} not borrowed.`);
-                        }
-                        saveLibrary(library)
-                        getUserInput();
+                            saveLibrary(library)
+                            getUserInput();
+                        });
                     });
                 });
                 break;
             }
-            // case 9: {
-
-            //     const issuedBooks = {};
-            //     rl.question('Enter Student ID: ', (studentID) => {
-            //         const studentIssuedBooks = issuedBooks.filter(book => book.studentID === studentID);
-
-            //         if (studentIssuedBooks.length > 0) {
-            //             console.log(`Issued Books for Student ID ${studentID}:`);
-            //             console.log(studentIssuedBooks);
-
-            //             rl.question('Enter Librarian ID for Returning: ', (returningLibrarianID) => {
-            //                 const returningLibrarian = library.librarians.find(librarian => librarian.librarianID === returningLibrarianID);
-
-            //                 if (returningLibrarian) {
-            //                     rl.question('Enter Returned Date (DD-MM-YYYY): ', (returnedDate) => {
-                        
-            //                         issuedBooks = issuedBooks.filter(book => book.studentID !== studentID);
-            //                         library.books.push(...studentIssuedBooks); 
-
-            //                         console.log(`Books Returned Successfully for Student ID ${studentID} by Librarian ID ${returningLibrarianID} on ${returnedDate}`);
-            //                         saveLibrary(library);
-            //                         getUserInput();
-            //                     });
-            //                 } else {
-            //                     console.log(`Librarian ID ${returningLibrarianID} not found in the library.`);
-            //                     getUserInput();
-            //                 }
-            //             });
-            //         } else {
-            //             console.log(`No Issued Books found for Student ID ${studentID}.`);
-            //             getUserInput();
-            //         }
-            //     });
-            //     break;
-            // }
-
+            
+            //Program Exit
             case 0:
                 console.log("Exiting program.");[]
                 return;
@@ -289,6 +266,8 @@ function getUserInput() {
 
 
 function main() {
+
+
 
     getUserInput();
 

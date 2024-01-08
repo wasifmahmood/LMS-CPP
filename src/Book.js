@@ -9,23 +9,7 @@ class Book {
         this.availability = true;
     }
 
-    borrowBook() {
-        if (this.availability) {
-            console.log("Book borrowed successfully");
-            this.availability = false;
-        } else {
-            console.log("Book is not available for borrowing.");
-        }
-    }
 
-    returnBook() {
-        this.availability = true;
-        console.log("Book returned successfully.");
-    }
-
-    calculateFine() {
-        console.log("Fine calculation.");
-    }
 
     setAuthor(author) {
         this.author = author;
