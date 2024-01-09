@@ -13,7 +13,7 @@ class Library {
         this.registeredStudents = [];
         this.registeredLibrarians = [];
         this.books = [];
-        
+        this.returnedbook = [];
     }
 
 

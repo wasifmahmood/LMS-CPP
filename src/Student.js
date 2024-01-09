@@ -6,6 +6,7 @@ class Student extends User {
         this.email = email;    //variable
         this.ID = ID;
         this.borrowedBooks = [];
+        this.returnedBooks = [];
     }
 
 
