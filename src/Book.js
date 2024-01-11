@@ -9,8 +9,6 @@ class Book {
         this.availability = true;
     }
 
-
-
     setAuthor(author) {
         this.author = author;
     }
