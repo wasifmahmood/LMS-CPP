@@ -54,7 +54,6 @@ function getUserInput(library, librarian, student) {
             //Add Student
             case 3: {
                 library.registerStudent(getUserInput, librarian, student);
-
                 break;
             }
             //Remove Student
@@ -106,13 +105,13 @@ function getUserInput(library, librarian, student) {
 function main() {
 
     // // Create author
-    // let author = new Author("sumair");
+    let author = new Author("sumair");
 
     // // Create books
-    // let book = new Book("The Hobbit", "07122", "Computer");
+    let book = new Book("The Hobbit", "07122", "Computer");
 
     // // setAuthor is a Book
-    // book.setAuthor(author);
+    book.setAuthor(author);
 
     // console.log(book);
 
@@ -121,22 +120,15 @@ function main() {
 
     // console.log(student);
 
-    // // student.borrowedBooks();
-    // // student.returnedBooks();
-
-
     // // Create Librarian
     const librarian = new Librarian("Hameed", "218023", "Hameed@gmail.com");
 
     // console.log(librarian);
 
-    // // librarian.addBook();
-    // // librarian.removedBook();
-    // // librarian.sortBook();
-
     // // Create Library
     const library = new Library("DHA Phase 1");
 
+    // console.log(library)
 
     getUserInput(library, librarian, student);
     return 0;
