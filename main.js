@@ -1,4 +1,3 @@
-import { get } from "https";
 import Author from "./src/Author.js";
 import Book from "./src/Book.js";
 import Librarian from "./src/Librarian.js";
@@ -28,7 +27,7 @@ import readline from 'readline';
 // const library = loadLibraryData();
 
 
-function getUserInput(library, librarian,student) {
+function getUserInput(library, librarian, student) {
     console.log("Library :: ", library)
     const rl = readline.createInterface({
         input: process.stdin,
@@ -44,67 +43,48 @@ function getUserInput(library, librarian,student) {
         switch (choice) {
             //Add Librarian
             case 1: {
-                // const newLibrary = new Library('Library Name');
-                // newLibrary.registerLibrarian(() => {
-                //     saveLibrary(newLibrary,getUserInput);
-                //     getUserInput(library);
-                // });
-                library.registerLibrarian(getUserInput, librarian);
-                // getUserInput();1
+                library.registerLibrarian(getUserInput, librarian, student);
                 break;
             }
             //Remove Librarian
             case 2: {
-                library.removeLibrarian(getUserInput, librarian);
-                // getUserInput();
+                library.removeLibrarian(getUserInput, librarian, student);
                 break;
             }
             //Add Student
             case 3: {
-                // const newLibrary = new Library('Add Student Name');
-                // newLibrary.registerStudent(() => {
-                //     saveLibrary(newLibrary, getUserInput);
-                //     getUserInput(library);
-                // });
-                library.registerStudent(getUserInput,librarian);
+                library.registerStudent(getUserInput, librarian, student);
 
                 break;
             }
             //Remove Student
             case 4: {
-                library.removeStudent(getUserInput, librarian);
-                // library.removeStudent();
-                // getUserInput();
+                library.removeStudent(getUserInput, librarian, student);
                 break;
             }
             //Add Book
             case 5: {
-                librarian.addBook(getUserInput, library);
-                // getUserInput();
+                librarian.addBook(getUserInput, library, student);
                 break;
             }
             //Remove Book
             case 6: {
-                librarian.removeBook(getUserInput, library);
-                // getUserInput();
+                librarian.removeBook(getUserInput, library, student);
                 break;
             }
             //Borrowed Book
             case 7: {
-                student.borrowBooks(getUserInput, library);
-                // getUserInput();
+                student.borrowBooks(getUserInput, library, librarian);
                 break;
             }
             //Return Book
             case 8: {
-                student.returnBooks(getUserInput, library);
-                // getUserInput();
+                student.returnBooks(getUserInput, library, librarian);
                 break;
             }
             //Sort Book
             case 9: {
-                librarian.sortBook(getUserInput, library);
-                // getUserInput();
+                librarian.sortBook(getUserInput, library), student;
                 break;
             }
 
@@ -114,7 +94,6 @@ function getUserInput(library, librarian,student) {
                 return;
             default:
                 console.log("Invalid choice. Try again.");
-                // saveLibrary(library)
                 getUserInput();
         }
     });
@@ -159,7 +138,7 @@ function main() {
     const library = new Library("DHA Phase 1");
 
 
-    getUserInput(library, librarian);
+    getUserInput(library, librarian, student);
     return 0;
 }
 main();

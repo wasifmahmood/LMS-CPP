@@ -17,7 +17,7 @@ class Student extends User {
     }
 
 
-    borrowBooks(getUserInput, library) {
+    borrowBooks(getUserInput, library, librarian) {
         const borrowBook = {};
 
         rl.question('Enter Book Title: ', (bookTitle) => {
@@ -38,40 +38,41 @@ class Student extends User {
                             if (librarian) {
                                 borrowBook.librarianID = librarianID;
 
+                                borrowBook.status = "Bookisborrowed";
+
                                 borrowBook.borrowedDate = new Date();
-                                library.books = library.books.filter(book => book.bookTitle !== bookTitle);
+                                library.books = "borrowed";
 
                                 student.borrowedBooks = student.borrowedBooks || [];
 
                                 student.borrowedBooks.push(borrowBook);
-                                // saveLibrary(library);
 
-                                console.log(`Student "${student.name}" Book Title "${borrowBook.bookTitle}" Student are Book successfully Borrowed.Student ID "${borrowBook.studentID}" Librarian ID "${borrowBook.librarianID}" Borrowed Date "${borrowBook.borrowedDate.toLocaleDateString()}}"`);
-                                getUserInput(library);
+                                console.log("student.borrowedBooks :: ", student.borrowedBooks)
+                                console.log(`Student "${student.name}" Book Title "${borrowBook.bookTitle}"  are Book successfully Borrowed.Student ID "${borrowBook.studentID}" Librarian ID "${borrowBook.librarianID}" Borrowed Date "${borrowBook.borrowedDate.toLocaleDateString()}"`);
+
+                                getUserInput(library, librarian, this);
 
                             } else {
                                 console.log(`Librarian ID "${librarianID}" not found in the library.`);
-                                getUserInput(library);
+                                getUserInput(library, librarian, this);
                             }
                         });
                     } else {
                         console.log(`Student ID "${studentID}" not found in the library.`);
-                        getUserInput(library);
+                        getUserInput(library, librarian, this);
                     }
                 });
             } else {
                 console.log(`Book Title "${bookTitle}" is not available in the library.`);
-                getUserInput(library);
+                getUserInput(library, librarian, this);
             }
         });
     }
-    returnBooks(getUserInput, library) {
+    returnBooks(getUserInput, library, librarian) {
         rl.question('Enter Book Title to return: ', (bookTitle) => {
             const student = library.registeredStudents.find(student => {
                 return student.borrowedBooks.some(book => book.bookTitle === bookTitle);
             });
-
-
             if (student) {
                 const returnBook = student.borrowedBooks.find(book => book.bookTitle === bookTitle);
 
@@ -91,24 +92,29 @@ class Student extends User {
 
                         console.log(`Fine: ${fine} rupees for returning after ${daysDifference} days.`);
                     }
+                    // console.log("student :: ", student)
 
-                    student.borrowBooks = student.borrowBooks.filter(book => book.bookTitle !== bookTitle);
+                    student.borrowedBooks = student.borrowedBooks.filter(book => book.bookTitle !== bookTitle);
 
                     console.log(`Student Returned Book Successfully BookTITLE "${returnBook.bookTitle}" `);
 
-                    returnBook.returnDate = returnDate;
-                    library.books = library.books || [];
-                    library.books.push(returnBook);
+                    returnBook.status = "AvaiableisBook";
 
-                    // saveLibrary(library)
+                    returnBook.returnDate = returnDate;
+                    library.books = "avaiable";
+
+                    student.returnedBooks = student.returnedBooks || [];
+
+                    student.returnedBooks.push(returnBook);
+
+                    getUserInput(library, librarian, this)
                 } else {
                     console.log(`Book TITLE "${bookTitle}" not found in borrowed books.`);
-                    getUserInput(library);
+                    getUserInput(library, librarian, this);
                 }
             } else {
                 console.log(`Book TITLE "${bookTitle}" not borrowed.`);
-                getUserInput(library);
-
+                getUserInput(library, librarian, this);
             }
         });
     }

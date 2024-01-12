@@ -13,10 +13,10 @@ class Librarian extends User {
         this.email = email;    //variable
         this.addedBooks = [];
         this.removedBook = [];
-        this.sortBooks = [];
+        this.sortedBooks = [];
     }
 
-    addBook(getUserInput, library) {
+    addBook(getUserInput, library, student) {
         const newBook = {};
 
         rl.question('Enter Book title: ', (bookTitle) => {
@@ -30,41 +30,42 @@ class Librarian extends User {
 
                     rl.question('Enter Book to the Shelve: ', (bookShelve) => {
                         newBook.bookShelve = bookShelve;
+
+                        newBook.status = "Avaiable";
+
                         library.books.push(newBook);
                         console.log(`Book "${newBook.bookTitle}" with ISBN "${newBook.bookISBN}" Genre "${newBook.bookGenre}" and Shelve "${newBook.bookShelve}" has been registered.`);
-                        // saveLibrary(library)
-                        getUserInput(library,this);
+                        getUserInput(library, this, student);
                     });
                 });
             });
         });
     }
-    removeBook(getUserInput, library) {
+    removeBook(getUserInput, library, student) {
         rl.question('Enter Book ISBN to remove: ', (bookISBN) => {
             const removeBooks = library.books.find(book => book.bookISBN === bookISBN);
             if (removeBooks) {
                 library.books = library.books.filter(book => book.bookISBN !== bookISBN);
+
+                removeBook.status = "Bookremoveinlibrary";
+
                 console.log(`Book "${removeBooks.bookTitle}" has been removed.`);
-                getUserInput(library,this);
+                getUserInput(library, this);
 
             } else {
                 console.log(`Book with ID ${bookISBN} not found.`);
-                getUserInput(library,this);
-
+                getUserInput(library, this, student);
             }
-            // saveLibrary(library)
         });
     }
-    sortBook(getUserInput, library) {
+    sortBook(getUserInput, library, student) {
         library.books.sort((a, b) => a.bookTitle.localeCompare(b.bookTitle));
 
         console.log("All books sorted alphabetically:");
         library.books.forEach(book => {
             console.log(`-Book Title "${book.bookTitle}" `);
-            getUserInput(library,this);
-
+            getUserInput(library, this, student);
         });
-
     }
 }
 
