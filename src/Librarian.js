@@ -47,7 +47,7 @@ class Librarian extends User {
             if (removeBooks) {
                 library.books = library.books.filter(book => book.bookISBN !== bookISBN);
 
-                removeBook.status = "Bookremoveinlibrary";
+                // removeBook.status = "Bookremoveinlibrary";
 
                 console.log(`Book "${removeBooks.bookTitle}" has been removed.`);
                 getUserInput(library, this);

@@ -83,7 +83,7 @@ function getUserInput(library, librarian, student) {
             }
             //Sort Book
             case 9: {
-                librarian.sortBook(getUserInput, library), student;
+                librarian.sortBook(getUserInput, library,student) ;
                 break;
             }
 
@@ -97,10 +97,6 @@ function getUserInput(library, librarian, student) {
         }
     });
 }
-
-
-
-
 
 function main() {
 
