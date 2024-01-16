@@ -1,5 +1,8 @@
 import User from "./User.js";
 import Library from "./Library.js";
+import Author from "./Author.js";
+import Book from "./Book.js";
+
 import readline from 'readline';
 
 const rl = readline.createInterface({
@@ -16,7 +19,7 @@ class Librarian extends User {
         this.sortedBooks = [];
     }
 
-    addBook(getUserInput, library, student) {
+    addBook(getUserInput, library, student,author) {
         const newBook = {};
 
         rl.question('Enter Book title: ', (bookTitle) => {
@@ -28,18 +31,20 @@ class Librarian extends User {
                 rl.question('Enter Book genre: ', (bookGenre) => {
                     newBook.bookGenre = bookGenre;
 
-                    rl.question('Enter Book to the Shelve: ', (bookShelve) => {
-                        newBook.bookShelve = bookShelve;
+                        rl.question('Enter Book to the Shelve: ', (bookShelve) => {
+                            newBook.bookShelve = bookShelve;
+                            
+                            newBook.author = author;
+                            newBook.status = "Available";
 
-                        newBook.status = "Avaiable";
-
-                        library.books.push(newBook);
-                        console.log(`Book "${newBook.bookTitle}" with ISBN "${newBook.bookISBN}" Genre "${newBook.bookGenre}" and Shelve "${newBook.bookShelve}" has been registered.`);
-                        getUserInput(library, this, student);
+                            library.books.push(newBook);
+                            console.log(`Book "${newBook.bookTitle}" with ISBN "${newBook.bookISBN} Author "${author}" " Genre "${newBook.bookGenre}" and Shelve "${newBook.bookShelve}" has been registered.`);
+                            console.log("Author::", author)
+                            getUserInput(library, this, student,author);
+                        });
                     });
                 });
             });
-        });
     }
     removeBook(getUserInput, library, student) {
         rl.question('Enter Book ISBN to remove: ', (bookISBN) => {
@@ -51,10 +56,10 @@ class Librarian extends User {
                 bookToRemove.status = "Book not avaiable in library";
 
                 console.log(`Book "${bookToRemove.bookTitle}" has been removed.`);
-                getUserInput(library, this,student);
+                getUserInput(library, this, student);
 
             } else {
-                console.log(`Book with ISBN ${bookISBN} not found.`);
+                console.log(`Book with ISBN ${bookISBN} not found in the library.`);
                 getUserInput(library, this, student);
             }
         });

@@ -27,7 +27,7 @@ import readline from 'readline';
 // const library = loadLibraryData();
 
 
-function getUserInput(library, librarian, student) {
+function getUserInput(library, librarian, student,author) {
     console.log("Library :: ", library)
     const rl = readline.createInterface({
         input: process.stdin,
@@ -63,7 +63,7 @@ function getUserInput(library, librarian, student) {
             }
             //Add Book
             case 5: {
-                librarian.addBook(getUserInput, library, student);
+                librarian.addBook(getUserInput, library, student,author);
                 break;
             }
             //Remove Book
@@ -109,7 +109,7 @@ function main() {
     // // setAuthor is a Book
     book.setAuthor(author);
 
-    // console.log(book);
+    console.log(book);
 
     // // Create Student
     const student = new Student("Hamza", "219596", "Hamza@gmail.com");
@@ -126,7 +126,7 @@ function main() {
 
     // console.log(library)
 
-    getUserInput(library, librarian, student);
+    getUserInput(library, librarian, student,author);
     return 0;
 }
 main();
