@@ -43,17 +43,18 @@ class Librarian extends User {
     }
     removeBook(getUserInput, library, student) {
         rl.question('Enter Book ISBN to remove: ', (bookISBN) => {
-            const removeBooks = library.books.find(book => book.bookISBN === bookISBN);
-            if (removeBooks) {
+            const bookToRemove = library.books.find(book => book.bookISBN === bookISBN);
+
+            if (bookToRemove) {
                 library.books = library.books.filter(book => book.bookISBN !== bookISBN);
 
-                // removeBook.status = "Bookremoveinlibrary";
+                bookToRemove.status = "Book not avaiable in library";
 
-                console.log(`Book "${removeBooks.bookTitle}" has been removed.`);
-                getUserInput(library, this);
+                console.log(`Book "${bookToRemove.bookTitle}" has been removed.`);
+                getUserInput(library, this,student);
 
             } else {
-                console.log(`Book with ID ${bookISBN} not found.`);
+                console.log(`Book with ISBN ${bookISBN} not found.`);
                 getUserInput(library, this, student);
             }
         });

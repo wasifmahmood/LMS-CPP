@@ -68,7 +68,7 @@ function getUserInput(library, librarian, student) {
             }
             //Remove Book
             case 6: {
-                librarian.removeBook(getUserInput, library, student);
+                librarian.removeBook(getUserInput,library,student);
                 break;
             }
             //Borrowed Book
@@ -83,7 +83,7 @@ function getUserInput(library, librarian, student) {
             }
             //Sort Book
             case 9: {
-                librarian.sortBook(getUserInput, library,student) ;
+                librarian.sortBook(getUserInput, library, student);
                 break;
             }
 

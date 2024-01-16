@@ -38,10 +38,11 @@ class Student extends User {
                             if (librarian) {
                                 borrowBook.librarianID = librarianID;
 
-                                borrowBook.status = "Bookisborrowed";
+                                borrowBook.status = "Avaiable";
 
                                 borrowBook.borrowedDate = new Date();
-                                library.books = "borrowed";
+    
+                                bookToBorrow.status = "Borrowed";
 
                                 student.borrowedBooks = student.borrowedBooks || [];
 
@@ -98,14 +99,15 @@ class Student extends User {
 
                     console.log(`Student Returned Book Successfully BookTITLE "${returnBook.bookTitle}" `);
 
-                    returnBook.status = "AvaiableisBook";
+                    returnBook.status = "Avaiable is Book";
 
                     returnBook.returnDate = returnDate;
-                    library.books = "avaiable";
+                    library.books = "Avaiable";
 
                     student.returnedBooks = student.returnedBooks || [];
 
                     student.returnedBooks.push(returnBook);
+                    console.log("student.returnedBooks :: ", student.returnedBooks)
 
                     getUserInput(library, librarian, this)
                 } else {
